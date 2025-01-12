@@ -11,6 +11,11 @@ module.exports.registerUser = async (req, res, next) => {
 
     const { fullname, email, password } = req.body;
 
+    const userAlreadyExist = await User.findOne({email})
+
+    if(userAlreadyExist){
+        res.status(200).json({message: "User already exists"});
+    }
     try {
         const hashedPassword = await User.hashPassword(password);
 
@@ -65,7 +70,7 @@ module.exports.logoutUser = async(req,res,next) => {
     res.clearCookie('token');
     const token = req.cookies.token || req.headers.authorization.split(' ')[1];
 
-    await blacklistTokenModel.create({token});
+    await blacklistTokenModel.create({token}); //logout ke time blaclist mai daal do taaki share ya local storage mai save hone par bhi login na ho  
 
     res.status(200).json({message: "Logged Out"})
 }
