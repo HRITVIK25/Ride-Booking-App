@@ -1,17 +1,19 @@
 import React, {useContext,useEffect} from 'react'
-import { UserDataContext } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
+import { CaptainDataContext } from '../context/CaptainContext';
 
-const UserprotectWrapper = ({
+
+const CaptainProtectWrapper = ({
     children
 }) => {
     
     const navigate = useNavigate();
     const token = localStorage.getItem('token')
+    const {captain, setCaptain} = useContext(CaptainDataContext)
 
     useEffect(()=>{
       if(!token){
-        navigate('/login');
+        navigate('/captain-login');
     }
     },[token])
   return (
@@ -21,7 +23,7 @@ const UserprotectWrapper = ({
   )
 }
 
-export default UserprotectWrapper;
+export default CaptainProtectWrapper;
 
 /*
 If the user is logged in  then the children components will be rendered otherwise login page will be displayed
