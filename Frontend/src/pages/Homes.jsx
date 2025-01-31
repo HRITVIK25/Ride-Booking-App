@@ -5,6 +5,9 @@ import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
 import LocationSearchPanel from "../components/LocationSearchPanel";
 import VehiclePanel from "../components/VehiclePanel";
+import ConfirmedRide from "../components/ConfirmedRide";
+import LookingForDriver from "../components/LookingForDriver";
+import WaitingForDriver from "../components/WaitingForDriver";
 
 const Homes = () => {
   const [pickup, setPickup] = useState("");
@@ -14,6 +17,12 @@ const Homes = () => {
   const panelCloseRef = useRef(null);
   const [vehiclePanel, setVehiclePanel] = useState(false);
   const vehiclePanelRef = useRef(null);
+  const [confirmRidePanel, setConfirmRidePanel] = useState(false)
+  const confirmRidePanelRef = useRef(null)
+  const [vehicleFound,setVehicleFound] = useState(false)
+  const vehicleFoundRef = useRef(null)
+  const [waitingForDriver,setWaitingForDriver] = useState(false)
+  const waitingForDriverRef = useRef(null)
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -60,6 +69,51 @@ const Homes = () => {
       }
     },
     [vehiclePanel]
+  );
+
+  useGSAP(
+    function () {
+      if (confirmRidePanel) {
+        gsap.to(confirmRidePanelRef.current, {
+          transform: "translateY(0)",
+        });
+      } else {
+        gsap.to(confirmRidePanelRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [confirmRidePanel]
+  );
+
+  useGSAP(
+    function () {
+      if (vehicleFound) {
+        gsap.to(vehicleFoundRef.current, {
+          transform: "translateY(0)",
+        });
+      } else {
+        gsap.to(vehicleFoundRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [vehicleFound]
+  );
+
+  useGSAP(
+    function () {
+      if (waitingForDriver) {
+        gsap.to(waitingForDriverRef.current, {
+          transform: "translateY(0)",
+        });
+      } else {
+        gsap.to(waitingForDriverRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [waitingForDriver]
   );
 
   return (
@@ -137,10 +191,38 @@ const Homes = () => {
         ref={vehiclePanelRef}
         className="fixed w-full z-10 bottom-0 bg-white px-3 py-8 translate-y-full"
       >
-        <VehiclePanel setVehiclePanel={setVehiclePanel} />
+        <VehiclePanel setVehiclePanel={setVehiclePanel} setConfirmRidePanel={setConfirmRidePanel} />
       </div>
       {/* Show ride Panel ends here */}
 
+      {/* Confirm ride Panel starts here */}
+      <div
+        ref={confirmRidePanelRef}
+        className="fixed w-full z-10 bottom-0 bg-white px-3 py-8 translate-y-full"
+      >
+        <ConfirmedRide setConfirmRidePanel={setConfirmRidePanel} setVehicleFound={setVehicleFound}/>
+      </div>
+      {/* confirm ride Panel ends here */}
+
+      {/* DriverSearchPanel starts here */}
+      <div
+        ref={vehicleFoundRef}
+        className="fixed w-full z-10 bottom-0 bg-white px-3 py-8 translate-y-full"
+      >
+        <LookingForDriver setVehicleFound={setVehicleFound}/>
+      </div>
+      {/* DriverSearchPanel ends here */}
+
+      {/* waitingForDriver starts here */}
+      <div
+        ref={waitingForDriverRef}
+        className="fixed w-full z-10 bottom-0 bg-white px-3 py-8"
+      >
+        <WaitingForDriver waitingForDriver={waitingForDriver} />
+      </div>
+      {/* waitingforDriver ends here */}
+      
+              
     </div>
   );
 };
