@@ -8,7 +8,7 @@ import gsap from "gsap";
 import ConfirmRidePopUp from "../components/ConfirmRidePopUp";
 
 const CaptainHome = () => {
-  const [ridePopupPanel, setRidePopupPanel] = useState(true); // ye false karna hai
+  const [ridePopupPanel, setRidePopupPanel] = useState(false); 
   const [confirmRidePopupPanel, setConfirmRidePopupPanel] = useState(false);
 
   const ridePopupPanelRef = useRef(null);
@@ -85,6 +85,7 @@ const CaptainHome = () => {
         className="fixed w-full h-screen z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12"
       >
         <ConfirmRidePopUp
+          ref={confirmRidePopupPanelRef}
           setConfirmRidePopupPanel={setConfirmRidePopupPanel}
           setRidePopupPanel={setRidePopupPanel}
         />

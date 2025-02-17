@@ -63,7 +63,7 @@ module.exports.loginCaptain = async(req,res,next)=>{
 }
 
 module.exports.getProfile = async(req,res,next) =>{
-    res.status(201).json(req.captain);
+    res.status(201).json({captain: req.captain});
 }
 
 module.exports.logoutCaptain = async(req,res,next)=>{

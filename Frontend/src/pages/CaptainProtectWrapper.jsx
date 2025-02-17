@@ -21,13 +21,13 @@ const CaptainProtectWrapper = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => {
+      .then(response => {
         if (response.status === 201) {
           setCaptain(response.data.captain);
           setIsLoading(false);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         // if token not validated as captain then error and back to login
         console.log(err);
         localStorage.removeItem("token"); //token removed
@@ -46,7 +46,7 @@ const CaptainProtectWrapper = ({ children }) => {
     );
   }
 
-  return <div>{children}</div>;
+  return (<div>{children}</div>);
 };
 
 export default CaptainProtectWrapper;

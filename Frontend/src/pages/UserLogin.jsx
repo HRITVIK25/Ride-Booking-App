@@ -31,9 +31,6 @@ const UserLogin = () => {
       const data = response.data;
       
       
-      console.log(data);
-      console.log(data.user);
-      
       setUser(data.user)
       localStorage.setItem('token',data.token)
       navigate("/home");
