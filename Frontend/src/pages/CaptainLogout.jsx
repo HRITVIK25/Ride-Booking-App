@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const UserLogout = () => {
+const CaptainLogout = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -11,18 +11,18 @@ const UserLogout = () => {
 
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/users/logout`,
+        `${import.meta.env.VITE_BASE_URL}/captain/logout`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
       );
 
       if (response.status === 200) {
         localStorage.removeItem("token");
-        navigate("/login");
-        toast.success("Account logged out")
+        navigate("/captain-login");
+        toast.success("Captain Logged out");
       }
     } catch (error) {
       console.error("Logout failed:", error);
@@ -40,4 +40,4 @@ const UserLogout = () => {
   );
 };
 
-export default UserLogout;
+export default CaptainLogout;

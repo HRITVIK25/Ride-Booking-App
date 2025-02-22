@@ -9,7 +9,7 @@ import ConfirmRidePopUp from "../components/ConfirmRidePopUp";
 import { SocketContext } from "../context/SocketContext";
 import { CaptainDataContext } from "../context/CaptainContext";
 import axios from "axios";
-import UserLogout from "./UserLogout";
+import CaptainLogout from "./CaptainLogout";
 
 const CaptainHome = () => {
   const [ridePopupPanel, setRidePopupPanel] = useState(false);
@@ -116,7 +116,7 @@ const CaptainHome = () => {
           >
             <i className="text-lg font-medium ri-logout-box-r-line"></i>
           </Link>
-          <UserLogout />
+          <CaptainLogout />
         </div>
       </div>
       <div className="h-3/5">
