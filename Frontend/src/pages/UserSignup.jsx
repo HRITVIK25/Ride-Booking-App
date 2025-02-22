@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { UserDataContext } from '../context/UserContext';
+import { UserDataContext } from "../context/UserContext";
+import { toast } from "react-toastify";
 
 const userSignup = () => {
   const [email, setEmail] = useState("");
@@ -9,10 +10,9 @@ const userSignup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userData, setUserData] = useState({});
-  const { user, setUser } = useContext(UserDataContext)
+  const { user, setUser } = useContext(UserDataContext);
 
   const navigate = useNavigate();
-  
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -26,17 +26,26 @@ const userSignup = () => {
       password: password,
     };
 
-    const response = await axios.post(
-      `${import.meta.env.VITE_BASE_URL}/users/register`,
-      newUser
-    );
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/users/register`,
+        newUser
+      );
 
-    if(response.status === 201){
-      const data = response.data;
-
-      setUser(data.user);
-      localStorage.setItem('token',data.token);
-      navigate('/home')
+      if (response.status === 201) {
+        const data = response.data;
+        toast.success("Registered successfully");
+        setUser(data.user);
+        localStorage.setItem("token", data.token);
+        navigate("/home");
+      }
+    } catch (error) {
+      console.log(error);
+      if (error.response) {
+        toast.error(error.response.data.message || "Signup failed");
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     }
 
     setEmail("");

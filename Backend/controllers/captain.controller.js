@@ -14,7 +14,7 @@ module.exports.registerCaptain = async(req,res,next) =>{
     const captainAlreadyExist = await captainModel.findOne({email});
 
     if(captainAlreadyExist){
-        return res.status(401).json({messsage: "Captain already exist"})
+        return res.status(401).json({message: "Captain already exist"})
     }
 
     const hashedPassword = await captainModel.hashPassword(password)
