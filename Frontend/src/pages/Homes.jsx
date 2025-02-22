@@ -12,7 +12,7 @@ import { SocketContext } from "../context/SocketContext";
 import { useContext } from "react";
 import { UserDataContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-// import LiveTracking from "../components/LiveTracking";
+import LiveTracking from "../components/LiveTracking";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -223,10 +223,10 @@ const Home = () => {
       />
       <div className="h-screen w-screen">
         {/* image for temporary use  */}
-        {/* <LiveTracking /> */}
+        <LiveTracking />
       </div>
-      <div className=" flex flex-col justify-end h-screen absolute top-0 w-full">
-        <div className="h-[30%] p-6 mb-7 bg-white relative">
+      <div className=" flex flex-col mb-6 justify-end h-screen absolute top-0 w-full">
+        <div className="h-[30%] p-6  bg-white relative">
           <h5
             ref={panelCloseRef}
             onClick={() => {
