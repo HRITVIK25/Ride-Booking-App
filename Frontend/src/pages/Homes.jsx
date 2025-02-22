@@ -8,7 +8,7 @@ import VehiclePanel from "../components/VehiclePanel";
 import ConfirmRide from "../components/ConfirmedRide";
 import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
-// import { SocketContext } from "../context/SocketContext";
+import { SocketContext } from "../context/SocketContext";
 import { useContext } from "react";
 import { UserDataContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
@@ -37,18 +37,20 @@ const Home = () => {
 
   const navigate = useNavigate();
 
-  // const { socket } = useContext(SocketContext);
+  const { socket } = useContext(SocketContext);
   const { user } = useContext(UserDataContext);
 
-  // useEffect(() => {
-  //   socket.emit("join", { userType: "user", userId: user._id });
-  // }, [user]);
+  useEffect(() => {
+    socket.emit("join", { userType: "user", userId: user._id });
+  }, [user]);
 
-  // socket.on("ride-confirmed", (ride) => {
-  //   setVehicleFound(false);
-  //   setWaitingForDriver(true);
-  //   setRide(ride);
-  // });
+  socket.on("ride-confirmed", ride => {
+    console.log("hello from homes");
+    console.log(ride);
+    setVehicleFound(false);
+    setWaitingForDriver(true);
+    setRide(ride);
+  });
 
   // socket.on("ride-started", (ride) => {
   //   console.log("ride");
@@ -136,41 +138,50 @@ const Home = () => {
     [vehiclePanel]
   );
 
-  useGSAP(function () {
-    if (confirmRidePanel) {
+  useGSAP(
+    function () {
+      if (confirmRidePanel) {
         gsap.to(confirmRidePanelRef.current, {
-            transform: 'translateY(0)'
-        })
-    } else {
+          transform: "translateY(0)",
+        });
+      } else {
         gsap.to(confirmRidePanelRef.current, {
-            transform: 'translateY(100%)'
-        })
-    }
-}, [ confirmRidePanel ])
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [confirmRidePanel]
+  );
 
-useGSAP(function () {
-  if (vehicleFound) {
-      gsap.to(vehicleFoundRef.current, {
-          transform: 'translateY(0)'
-      })
-  } else {
-      gsap.to(vehicleFoundRef.current, {
-          transform: 'translateY(100%)'
-      })
-  }
-}, [ vehicleFound ])
+  useGSAP(
+    function () {
+      if (vehicleFound) {
+        gsap.to(vehicleFoundRef.current, {
+          transform: "translateY(0)",
+        });
+      } else {
+        gsap.to(vehicleFoundRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [vehicleFound]
+  );
 
-useGSAP(function () {
-  if (waitingForDriver) {
-      gsap.to(waitingForDriverRef.current, {
-          transform: 'translateY(0)'
-      })
-  } else {
-      gsap.to(waitingForDriverRef.current, {
-          transform: 'translateY(100%)'
-      })
-  }
-}, [ waitingForDriver ])
+  useGSAP(
+    function () {
+      if (waitingForDriver) {
+        gsap.to(waitingForDriverRef.current, {
+          transform: "translateY(0)",
+        });
+      } else {
+        gsap.to(waitingForDriverRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [waitingForDriver]
+  );
 
   async function findTrip() {
     setVehiclePanel(true);
@@ -217,7 +228,7 @@ useGSAP(function () {
         {/* <LiveTracking /> */}
       </div>
       <div className=" flex flex-col justify-end h-screen absolute top-0 w-full">
-        <div className="h-[30%] p-6 bg-white relative">
+        <div className="h-[30%] p-6 mb-7 bg-white relative">
           <h5
             ref={panelCloseRef}
             onClick={() => {
@@ -229,7 +240,7 @@ useGSAP(function () {
           </h5>
           <h4 className="text-2xl font-semibold">Find a trip</h4>
           <form
-            className="relative py-3"
+            className="relative py-2"
             onSubmit={(e) => {
               submitHandler(e);
             }}
@@ -307,7 +318,7 @@ useGSAP(function () {
       </div>
       <div
         ref={vehicleFoundRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3  pt-12"
       >
         <LookingForDriver
           createRide={createRide}
