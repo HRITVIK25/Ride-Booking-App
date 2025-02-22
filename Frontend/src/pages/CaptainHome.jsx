@@ -9,6 +9,7 @@ import ConfirmRidePopUp from "../components/ConfirmRidePopUp";
 import { SocketContext } from "../context/SocketContext";
 import { CaptainDataContext } from "../context/CaptainContext";
 import axios from "axios";
+import UserLogout from "./UserLogout";
 
 const CaptainHome = () => {
   const [ridePopupPanel, setRidePopupPanel] = useState(false);
@@ -53,25 +54,22 @@ const CaptainHome = () => {
   });
 
   async function confirmRide() {
-
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/confirm`, {
-
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/rides/confirm`,
+      {
         rideId: ride._id,
         captainId: captain._id,
-
-
-    }, {
+      },
+      {
         headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-    })
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
 
-
-    setRidePopupPanel(false)
-    setConfirmRidePopupPanel(true)
-
-}
-
+    setRidePopupPanel(false);
+    setConfirmRidePopupPanel(true);
+  }
 
   useGSAP(
     function () {
@@ -111,12 +109,15 @@ const CaptainHome = () => {
           src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
           alt=""
         />
-        <Link
-          to="/captain-home"
-          className=" h-10 w-10 bg-white flex items-center justify-center rounded-full"
-        >
-          <i className="text-lg font-medium ri-logout-box-r-line"></i>
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link
+            to="/captain-home"
+            className="h-10 w-10 bg-white flex items-center justify-center rounded-full"
+          >
+            <i className="text-lg font-medium ri-logout-box-r-line"></i>
+          </Link>
+          <UserLogout />
+        </div>
       </div>
       <div className="h-3/5">
         <img

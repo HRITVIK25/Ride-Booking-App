@@ -13,6 +13,7 @@ import { useContext } from "react";
 import { UserDataContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import LiveTracking from "../components/LiveTracking";
+import UserLogout from "./UserLogout";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -30,9 +31,9 @@ const Home = () => {
   const [waitingForDriver, setWaitingForDriver] = useState(false);
   const [pickupSuggestions, setPickupSuggestions] = useState([]);
   const [destinationSuggestions, setDestinationSuggestions] = useState([]);
-  const [activeField, setActiveField] = useState(null); //tracks which field is active as to set that input in destination or pickup
+  const [activeField, setActiveField] = useState(null);
   const [fare, setFare] = useState({});
-  const [vehicleType, setVehicleType] = useState(null); //tracks type opf vehicle set in vehiclepanel by user
+  const [vehicleType, setVehicleType] = useState(null);
   const [ride, setRide] = useState(null);
 
   const navigate = useNavigate();
@@ -44,16 +45,15 @@ const Home = () => {
     socket.emit("join", { userType: "user", userId: user._id });
   }, [user]);
 
-  socket.on("ride-confirmed", ride => {
+  socket.on("ride-confirmed", (ride) => {
     setVehicleFound(false);
     setWaitingForDriver(true);
     setRide(ride);
   });
 
   socket.on("ride-started", (ride) => {
-    // console.log(ride)
     setWaitingForDriver(false);
-    navigate("/riding", { state: { ride } }); // Updated navigate to include ride data
+    navigate("/riding", { state: { ride } });
   });
 
   const handlePickupChange = async (e) => {
@@ -102,7 +102,6 @@ const Home = () => {
         gsap.to(panelRef.current, {
           height: "70%",
           padding: 24,
-          // opacity:1
         });
         gsap.to(panelCloseRef.current, {
           opacity: 1,
@@ -111,7 +110,6 @@ const Home = () => {
         gsap.to(panelRef.current, {
           height: "0%",
           padding: 0,
-          // opacity:0
         });
         gsap.to(panelCloseRef.current, {
           opacity: 0,
@@ -217,16 +215,15 @@ const Home = () => {
   return (
     <div className="h-screen relative overflow-hidden">
       <img
-        className="w-16 absolute left-5 top-5"
+        className="w-16 absolute left-5 top-5 md:w-20"
         src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
         alt=""
       />
       <div className="h-screen w-screen">
-        {/* image for temporary use  */}
         <LiveTracking />
       </div>
-      <div className=" flex flex-col mb-6 justify-end h-screen absolute top-0 w-full">
-        <div className="h-[30%] p-6  bg-white relative">
+      <div className="flex flex-col mb-6 justify-end h-screen absolute top-0 w-full">
+        <div className="h-[30%] p-6 bg-white relative">
           <h5
             ref={panelCloseRef}
             onClick={() => {
@@ -236,7 +233,10 @@ const Home = () => {
           >
             <i className="ri-arrow-down-wide-line"></i>
           </h5>
-          <h4 className="text-2xl font-semibold">Find a trip</h4>
+          <div className="flex justify-between items-center mb-4">
+            <h4 className="text-2xl font-semibold">Find a trip</h4>
+            <UserLogout />
+          </div>
           <form
             className="relative py-2"
             onSubmit={(e) => {
@@ -262,7 +262,7 @@ const Home = () => {
               }}
               value={destination}
               onChange={handleDestinationChange}
-              className="bg-[#eee] px-12 py-2 text-lg rounded-lg w-full  mt-3"
+              className="bg-[#eee] px-12 py-2 text-lg rounded-lg w-full mt-3"
               type="text"
               placeholder="Enter your destination"
             />
@@ -316,7 +316,7 @@ const Home = () => {
       </div>
       <div
         ref={vehicleFoundRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3  pt-12"
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 pt-12"
       >
         <LookingForDriver
           createRide={createRide}
@@ -327,9 +327,10 @@ const Home = () => {
           setVehicleFound={setVehicleFound}
         />
       </div>
+
       <div
         ref={waitingForDriverRef}
-        className="fixed w-full  z-10 bottom-0  bg-white px-3 py-6 pt-12"
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
       >
         <WaitingForDriver
           ride={ride}
