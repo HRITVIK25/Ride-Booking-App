@@ -37,14 +37,7 @@ function App() {
             </UserprotectWrapper>
           }
         />
-        <Route
-          path="/riding"
-          element={
-            <UserprotectWrapper>
-              <Riding />
-            </UserprotectWrapper>
-          }
-        />
+      <Route path='/riding' element={<Riding />} />
 
 
         {/* Captain Routes */}
