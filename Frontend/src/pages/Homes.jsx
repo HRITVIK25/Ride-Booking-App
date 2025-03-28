@@ -151,7 +151,7 @@ const Home = () => {
 
   useGSAP(
     function () {
-      if (vehicleFound) {
+      if (vehicleFound && !confirmRidePanel) {
         gsap.to(vehicleFoundRef.current, {
           transform: "translateY(0)",
         });
@@ -161,7 +161,7 @@ const Home = () => {
         });
       }
     },
-    [vehicleFound]
+    [vehicleFound, confirmRidePanel]
   );
 
   useGSAP(
@@ -182,7 +182,6 @@ const Home = () => {
   async function findTrip() {
     setVehiclePanel(true);
     setPanelOpen(false);
-
     const response = await axios.get(
       `${import.meta.env.VITE_BASE_URL}/rides/get-fare`,
       {
@@ -300,6 +299,7 @@ const Home = () => {
           setVehiclePanel={setVehiclePanel}
         />
       </div>
+{ confirmRidePanel &&
       <div
         ref={confirmRidePanelRef}
         className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
@@ -313,20 +313,22 @@ const Home = () => {
           setConfirmRidePanel={setConfirmRidePanel}
           setVehicleFound={setVehicleFound}
         />
-      </div>
-      <div
-        ref={vehicleFoundRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 pt-12"
-      >
-        <LookingForDriver
-          createRide={createRide}
-          pickup={pickup}
-          destination={destination}
-          fare={fare}
-          vehicleType={vehicleType}
-          setVehicleFound={setVehicleFound}
-        />
-      </div>
+      </div>}
+      {vehicleFound && !confirmRidePanel && (
+        <div
+          ref={vehicleFoundRef}
+          className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+        >
+          <LookingForDriver
+            createRide={createRide}
+            pickup={pickup}
+            destination={destination}
+            fare={fare}
+            vehicleType={vehicleType}
+            setVehicleFound={setVehicleFound}
+          />
+        </div>
+      )}
 
       <div
         ref={waitingForDriverRef}
